@@ -22,6 +22,9 @@ model Student {
   address     String
   img         String?
   bloodType   String
+  mental_health_score String?
+  is_boarding Boolean
+  department  Department
   sex         UserSex
   createdAt   DateTime     @default(now())
   parentId    String
@@ -33,6 +36,10 @@ model Student {
   attendances Attendance[]
   results     Result[]
   birthday    DateTime
+  takesExternalTutorship Boolean
+  disability      Disability?
+  numberOfSiblings Int?
+  internetAccessAtHome Boolean
 }
 
 model Teacher {
@@ -51,6 +58,9 @@ model Teacher {
   lessons   Lesson[]
   classes   Class[]
   birthday  DateTime
+  teacherHighestEducation_level EducationLevel
+  dateOfEmployment DateTime
+  yearsOfExperienceBeforeJoining Int?
 }
 
 model Parent {
@@ -63,6 +73,9 @@ model Parent {
   address   String
   createdAt DateTime  @default(now())
   students  Student[]
+  incomeLevel IncomeLevel
+  parentHighestEducationLevel EducationLevel
+  parentSupportIndex Float? @db.Float()
 }
 
 model Grade {
@@ -70,7 +83,7 @@ model Grade {
   level Int @unique
 
   students Student[]
-  classess Class[]
+  classes Class[]
 }
 
 model Class {
@@ -179,9 +192,80 @@ model Announcement {
   class   Class? @relation(fields: [classId], references: [id])
 }
 
+model Club {
+  id        String   @id 
+  name      String   @unique
+  description String?
+  category  ClubCategory
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  students  Student_Club[]
+}
+
+enum ClubCategory {
+  Sports
+  Arts
+  Academic
+  Cultural
+  Other
+}
+
+model Student_Club {
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+  club      Club @relation(fields: [clubId], references: [id])
+  clubId    String
+  joinDate  Date
+  role      StudentClubRole
+  @@id([studentId, clubId])
+}
+model DisciplinaryRecord {
+  id          String   @id @default(autoincrement())
+  student     Student  @relation(fields: [studentId], references: [id])
+  studentId   String
+  incidentDate Date     @default(now())
+  incidentDescription String?
+  infraction  Infraction
+  consequence Consequence
+  consequenceDetails String?
+  reportedBy  String?
+  reportedDate Date     @default(now())
+  updatedAt   DateTime  @default(now())
+}
+
+enum Infraction {
+  Bullying
+  Fighting
+  Disruption
+  Cheating
+  Other
+}
+
+enum Consequence {
+  Detention
+  Suspension
+  Expulsion
+  Counseling
+  Other
+}
+
+enum StudentClubRole {
+  Member
+  President
+  VicePresident
+  Secretary
+  Other
+}
+
 enum UserSex {
   MALE
   FEMALE
+}
+
+enum Department {
+  science
+  arts
+  commerce
 }
 
 enum Day {
@@ -190,4 +274,34 @@ enum Day {
   WEDNESDAY
   THURSDAY
   FRIDAY
+}
+enum IncomeLevel {
+Below50k
+Between50kTo100k
+Between100kTo200k
+Between200kTo500k
+Between500kTo1m
+Between1mTo2m
+Between2mTo5m
+Above5m
+}
+enum EducationLevel {
+  Primary
+  Secondary
+  Vocational
+  Diploma
+  Bachelor
+  Master
+  Doctoral
+  Unknown
+  Other
+}
+
+enum Disability {
+  None
+  Visual
+  Hearing
+  Physical
+  Learning
+  Other
 }

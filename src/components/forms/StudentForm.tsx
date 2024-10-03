@@ -54,16 +54,7 @@ const StudentForm = ({
   const onSubmit = handleSubmit((data) => {
     console.log("hello");
     console.log(data);
-    const showToastMessage = () => {
-      toast.error(`Something went wrong: ${state.error}`, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    };
-
-    if (state.error){
-      showToastMessage();
-    }
-   
+    
     formAction({ ...data, img: img?.secure_url });
   });
 

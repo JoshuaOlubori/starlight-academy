@@ -41,8 +41,27 @@ export const teacherSchema = z.object({
   img: z.string().optional(),
   bloodType: z.string().min(1, { message: "Blood Type is required!" }),
   birthday: z.coerce.date({ message: "Birthday is required!" }),
+  dateOfEmployment: z.coerce.date({ message: "Date of employment is required!" }),
   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
   subjects: z.array(z.string()).optional(), // subject ids
+  yearsOfExperienceBeforeJoining: z.coerce.number().optional(), 
+  teacherHighestEducationLevel: z.enum(
+    [
+      "Primary",
+      "Secondary",
+      "Vocational",
+      "Diploma",
+      "Bachelor",
+      "Master",
+      "Doctoral",
+      "Unknown",
+      "Other",
+    ],
+    {
+      message:
+        "allowable values are:  'Primary','Secondary','Vocational','Diploma','Bachelor','Master','Doctoral','Unknown','Other'",
+    }
+  ),
 });
 
 export type TeacherSchema = z.infer<typeof teacherSchema>;
