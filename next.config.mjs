@@ -8,6 +8,7 @@ const nextConfig = {
   experimental: {
     serverActions: {
       allowedOrigins: [
+        'https://starlight-academy-96po.onrender.com',
         'localhost:3000', // localhost
         'https://reimagined-yodel-46rp7jvrj4pcjx4x-3000.app.github.dev/',
         'reimagined-yodel-46rp7jvrj4pcjx4x.github.dev',
