@@ -40,6 +40,8 @@ model Student {
   disability      Disability?
   numberOfSiblings Int?
   internetAccessAtHome Boolean
+  clubs       Student_Club[]   // Added opposite relation for Student_Club
+  disciplinaryRecords DisciplinaryRecord[]  // Added opposite relation for DisciplinaryRecord
 }
 
 model Teacher {
@@ -75,7 +77,7 @@ model Parent {
   students  Student[]
   incomeLevel IncomeLevel
   parentHighestEducationLevel EducationLevel
-  parentSupportIndex Float? @db.Float()
+  parentSupportIndex Float? @db.DoublePrecision()  // Replaced @db.Float() with @db.DoublePrecision()
 }
 
 model Grade {
@@ -215,21 +217,22 @@ model Student_Club {
   studentId String
   club      Club @relation(fields: [clubId], references: [id])
   clubId    String
-  joinDate  Date
+  joinDate  DateTime
   role      StudentClubRole
   @@id([studentId, clubId])
 }
+
 model DisciplinaryRecord {
-  id          String   @id @default(autoincrement())
+  id          Int   @id @default(autoincrement())  // Changed id to Int with autoincrement
   student     Student  @relation(fields: [studentId], references: [id])
   studentId   String
-  incidentDate Date     @default(now())
+  incidentDate DateTime     @default(now())
   incidentDescription String?
   infraction  Infraction
   consequence Consequence
   consequenceDetails String?
   reportedBy  String?
-  reportedDate Date     @default(now())
+  reportedDate DateTime     @default(now())
   updatedAt   DateTime  @default(now())
 }
 
@@ -275,16 +278,18 @@ enum Day {
   THURSDAY
   FRIDAY
 }
+
 enum IncomeLevel {
-Below50k
-Between50kTo100k
-Between100kTo200k
-Between200kTo500k
-Between500kTo1m
-Between1mTo2m
-Between2mTo5m
-Above5m
+  Below50k
+  Between50kTo100k
+  Between100kTo200k
+  Between200kTo500k
+  Between500kTo1m
+  Between1mTo2m
+  Between2mTo5m
+  Above5m
 }
+
 enum EducationLevel {
   Primary
   Secondary
