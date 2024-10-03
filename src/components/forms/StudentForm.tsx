@@ -54,6 +54,16 @@ const StudentForm = ({
   const onSubmit = handleSubmit((data) => {
     console.log("hello");
     console.log(data);
+    const showToastMessage = () => {
+      toast.error(`Something went wrong: ${state.error}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    };
+
+    if (state.error){
+      showToastMessage();
+    }
+   
     formAction({ ...data, img: img?.secure_url });
   });
 
@@ -249,7 +259,8 @@ const StudentForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">Something went wrong!</span>
+        <span className="text-red-500">Something went wrong! {state.error}</span>
+       
       )}
       <button type="submit" className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
